@@ -1,0 +1,19 @@
+{
+  "name": "example-student-portal",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha server/tests/*_tests.js",
+    "server": "node server"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "create-react-app": "^2.1.3",
+    "express": "4.16.4"
+  },
+  "devDependencies": {
+    "mocha": "5.2.0"
+  }
+}

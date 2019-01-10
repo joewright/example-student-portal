@@ -15,20 +15,17 @@ npm install
 
 Then run the server with
 ```bash
-npm start
+# fron the project root
+APP_ENV=dev npm start
 ```
 
-On your first run, be sure to build the front end assets
+On your first run, you'll want to build the front-end assets.
 
-## Front end assets
-
-Build the front end assets in the [frontend](./frontend) folder via
+In another terminal, build front-end assets by doing
 ```bash
-# install these dependencies
+cd frontend/
 npm install
-
-# build them
 npm run build
 ```
 
-See the [frontend README](./frontend) for more info.
+See the [frontend README](./frontend) for more development info.

@@ -1,31 +1,30 @@
-import React, { Component } from 'react';
-import './App.css';
-import LoginForm from './LoginForm';
+import React, {Component} from 'react';
 import axios from 'axios';
+import { BrowserRouter, Route, Link } from 'react-router-dom';
+import AssignmentsList from './assignments/list';
+import AssignmentDetail from './assignments/detail';
 
 axios.defaults.baseURL = `http://localhost:5000`;
 
+const loadDataOnEnter = (nextState, replace, callback) => {
+    const nRoutes = nextState.routes.length;
+    const component = nextState.routes[nRoutes-1].component;
+    const params = nextState.params;
+    component.loadData(params, () => callback());
+};
+
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-        loggedIn: false
-    };
-  }
-  handleLogin(user) {
-    axios.post('/auth/login', {user: user})
-      .then(response => {
-        console.log(response.data);
-      }, (err) => {
-        console.error(err);
-      });
-  }
   render() {
     return (
-      <div className="App">
-        <h1>Let's go</h1>
-        <LoginForm handleLogin={this.handleLogin} />
-      </div>
+      <BrowserRouter>
+        <div>
+          <ul>
+            <li><Link to="/assignments">Assignments</Link></li>
+          </ul>
+          <Route exact path="/assignments" component={AssignmentsList} onEnter={loadDataOnEnter} />
+          <Route path="/assignments/:assignmentId" component={AssignmentDetail} onEnter={loadDataOnEnter} />
+        </div>
+      </BrowserRouter>
     );
   }
 }

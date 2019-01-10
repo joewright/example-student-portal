@@ -28,6 +28,7 @@ describe('The api', () => {
         done();
       });
   });
+
   it('has an endpoint for retrieving assignments', () => {
     request(app)
       .get('/api/assignments')
@@ -35,6 +36,16 @@ describe('The api', () => {
       .expect(200)
       .end((err, res) => {
         assert.notEqual(res.body.length, 0);
+      });
+  });
+
+  it('retrieves a single assignment', () => {
+    request(app)
+      .get('/api/assignments/238d0a81-2adf-4a4a-8169-bfdffd10adf9')
+      .set('Accept', 'application/json')
+      .expect(200)
+      .end((err, res) => {
+        assert.notEqual(res.body._uuid, undefined);
       });
   });
 });

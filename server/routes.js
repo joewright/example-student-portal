@@ -1,12 +1,18 @@
 const bodyParser = require('body-parser');
-const Auth = require('./controllers/auth');
-const Assignments = require('./controllers/assignments');
+const AuthResource = require('./controllers/auth');
+const AssignmentResource = require('./controllers/assignments');
 
 exports.setupRoutes = setupRoutes;
 
 function setupRoutes(app) {
+  const resourceOptions = {
+    dbConnection: app.dbConnection
+  };
+  const Assignments = new AssignmentResource(resourceOptions);
+  const Auth = new AuthResource(resourceOptions);
+
   app.post('/auth/login', bodyParser.json(), (req, res) => {
-    Auth.Login(req.body.user, (error, user) => {
+    Auth.login(req.body.user, (error, user) => {
       if (error) {
         return res.status(422).send({
           error: 'Invalid username or password'
@@ -24,6 +30,17 @@ function setupRoutes(app) {
         });
       }
       res.send(results);
+    });
+  });
+
+  app.get('/api/assignments/:assignmentId', bodyParser.json(), (req, res) => {
+    Assignments.findById(req.params.assignmentId, (error, result) => {
+      if (error) {
+        return res.status(422).send({
+          error: 'Unable to retrieve assignments'
+        });
+      }
+      res.send(result);
     });
   });
 }

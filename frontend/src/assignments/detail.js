@@ -1,9 +1,8 @@
 import React, {Component} from "react";
-import { Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 // TODO: determine what denotes a failing grade
-const failingGradeMax = 79;
 class AssignmentDetail extends Component {
   constructor(props) {
     super(props);

@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import { Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 // TODO: determine what denotes a failing grade
@@ -55,7 +55,7 @@ class AssignmentsList extends Component {
           }
           return assignment;
         });
-        this.setState({assignments: response.data});
+        this.setState({assignments: formattedAssignments});
       }, (err) => {
         console.error(err);
       });

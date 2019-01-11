@@ -4,14 +4,24 @@ class Auth {
   constructor(options) {
     this.connection = options.dbConnection;
   }
-  login(user, done) {
-    // TODO: integrate with auth service
-    done(null, {
-      _uuid: uuidv4(),
-      username: user.username,
-      firstName: 'Test',
-      lastName: 'User'
-    });
+  login() {
+    return (req, res, next) => {
+      // TODO: integrate with auth service
+      if (!req.body.user) {
+        req.errors = {
+          error: 'Invalid credentials'
+        };
+      } else {
+        req.resource = {
+          _uuid: uuidv4(),
+          username: req.body.user.username,
+          firstName: 'Test',
+          lastName: 'User'
+        };
+      }
+
+      next();
+    };
   }
 }
 

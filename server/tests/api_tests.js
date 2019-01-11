@@ -2,7 +2,10 @@
 const assert = require('assert');
 const request = require('supertest');
 
-const {app, server} = require('../');
+const {
+  app,
+  server
+} = require('../');
 
 after(() => {
   server.close();
@@ -46,6 +49,17 @@ describe('The api', () => {
       .expect(200)
       .end((err, res) => {
         assert.notEqual(res.body._uuid, undefined);
+      });
+  });
+
+  it('fails to upload a file', (done) => {
+    request(app)
+      .post('/api/assignments/4343d920-e9e6-4070-9110-dfc28b5e5b94/submit')
+      .expect(422)
+      .end((err, res) => {
+        if (err) return done(err);
+        assert.notEqual(res.body.error, undefined);
+        done();
       });
   });
 });

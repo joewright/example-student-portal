@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-// TODO: determine what denotes a failing grade
 class AssignmentDetail extends Component {
   constructor(props) {
     super(props);
@@ -13,6 +12,8 @@ class AssignmentDetail extends Component {
     return (
       <div>
         <code>Viewing assignment: {this.state.assignment._uuid}</code>
+        <br />
+        <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
         <br />
         <Link to="/assignments">Back</Link>
       </div>

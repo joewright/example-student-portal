@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Link } from 'react-router-dom';
 import AssignmentsList from './assignments/list';
 import AssignmentDetail from './assignments/detail';
 
+// TODO: prod setup
 axios.defaults.baseURL = `http://localhost:5000`;
 
 const loadDataOnEnter = (nextState, replace, callback) => {

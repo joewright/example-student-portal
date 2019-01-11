@@ -17,6 +17,40 @@ class Assignment {
   findById(id, callback) {
     callback(null, getFakeAssignment(id));
   }
+
+  index() {
+    return (req, res, next) => {
+      this.list(req.query, (error, results) => {
+        if (error) {
+          console.error(error);
+          req.error = {
+            error: 'Unable to retrieve assignments'
+          };
+        } else {
+          req.resource = results;
+        }
+
+        next();
+      });
+    };
+  }
+
+  get() {
+    return (req, res, next) => {
+      this.findById(req.params.assignmentId, (error, result) => {
+        if (error) {
+          console.error(error);
+          req.error = {
+            error: 'Unable to retrieve assignments'
+          };
+        } else {
+          req.resource = result;
+        }
+
+        next();
+      });
+    };
+  }
 }
 
 module.exports = Assignment;
@@ -36,7 +70,7 @@ function getFakeAssignment(_uuid) {
 }
 
 function getRandomInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }

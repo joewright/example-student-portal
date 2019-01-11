@@ -1,6 +1,9 @@
 const bodyParser = require('body-parser');
+
+// set up endpoint resources
 const AuthResource = require('./controllers/auth');
 const AssignmentResource = require('./controllers/assignments');
+const UploadHandler = require('./controllers/upload-handler');
 
 exports.setupRoutes = setupRoutes;
 
@@ -8,39 +11,37 @@ function setupRoutes(app) {
   const resourceOptions = {
     dbConnection: app.dbConnection
   };
-  const Assignments = new AssignmentResource(resourceOptions);
   const Auth = new AuthResource(resourceOptions);
+  const Assignments = new AssignmentResource(resourceOptions);
 
-  app.post('/auth/login', bodyParser.json(), (req, res) => {
-    Auth.login(req.body.user, (error, user) => {
-      if (error) {
-        return res.status(422).send({
-          error: 'Invalid username or password'
-        });
-      }
-      res.send(user);
-    });
-  });
+  // user routes
+  app.post('/auth/login',
+    bodyParser.json(),
+    Auth.login(),
+    sendResult());
 
-  app.get('/api/assignments', bodyParser.json(), (req, res) => {
-    Assignments.list(null, (error, results) => {
-      if (error) {
-        return res.status(422).send({
-          error: 'Unable to retrieve assignments'
-        });
-      }
-      res.send(results);
-    });
-  });
+  // assignment routes
+  app.get('/api/assignments',
+    Assignments.index(),
+    sendResult());
 
-  app.get('/api/assignments/:assignmentId', bodyParser.json(), (req, res) => {
-    Assignments.findById(req.params.assignmentId, (error, result) => {
-      if (error) {
-        return res.status(422).send({
-          error: 'Unable to retrieve assignments'
-        });
-      }
-      res.send(result);
-    });
-  });
+  app.get('/api/assignments/:assignmentId',
+    Assignments.get(),
+    sendResult());
+
+  app.post('/api/assignments/:assignmentId/submit',
+    Assignments.get(),
+    UploadHandler.upload.single('file'),
+    UploadHandler.validate(),
+    sendResult());
+}
+
+// generic response formatter
+function sendResult() {
+  return (req, res) => {
+    if (req.errors) {
+      return res.status(422).send(req.errors);
+    }
+    res.send(req.resource);
+  };
 }

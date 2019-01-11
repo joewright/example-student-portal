@@ -28,4 +28,6 @@ npm install
 npm run build
 ```
 
+Now the app should be available at http://localhost:5000
+
 See the [frontend README](./frontend) for more development info.
